@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import DataEntry from '../DataEntry/DataEntry';
@@ -42,16 +43,33 @@ const SignUp: React.FC = () => {
   });
   const [activeStep, setActiveStep] = useState<number | null>(1);
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    if(data?.comments) {
-    console.log(data); // Handle form submission logic here
-    }
+const onSubmit: SubmitHandler<FormData> = (data) => {
+  if (data?.comments) {
+    // Create an object with the desired structure
+    const postData = {
+      firstName: data?.firstName || '',
+      surname: data?.surname || '',
+      email: data?.email || '',
+      phoneNumber: data?.phoneNumber || '',
+      gender: data?.gender || 'Select...',
+      day: data?.day || '',
+      month: data?.month || '',
+      year: data?.year || '',
+      comments: data?.comments || '',
+    };
 
-    // Move to the next step if there are no validation errors
-    if (Object.keys(errors).length === 0) {
-      setActiveStep((prevStep) => (prevStep !== null && prevStep !== 3 ? prevStep + 1 : prevStep || 1));
-    }
-  };
+    // Send a POST request using Axios
+    axios.post('your-api-endpoint', postData)
+      .then((response) => {
+        // Handle success
+        console.log('Post request successful', response);
+      })
+      .catch((error) => {
+        // Handle error
+        console.error('Error during post request', error);
+      });
+  }
+};
 
   return (
     <PageContainer>

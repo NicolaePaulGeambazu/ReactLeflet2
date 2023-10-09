@@ -1,6 +1,6 @@
 // DataEntry.tsx
 import React from 'react';
-import { StyledInput, StyledTextArea, StyledSelect, ErrorText } from './DataEntry.style'; // Import ErrorText
+import { StyledInput, StyledTextArea, StyledSelect, ErrorText } from './DataEntry.style';
 
 interface DataEntryProps {
   type: 'text' | 'email' | 'tel' | 'textarea' | 'select';
@@ -9,7 +9,7 @@ interface DataEntryProps {
   value: string;
   onChange?: (value: string) => void;
   options?: string[];
-  error?: string; // New prop for error message
+  error?: string;
 }
 
 const DataEntry: React.FC<DataEntryProps> = ({ type, placeholder, name, value, onChange, options, error }) => {
