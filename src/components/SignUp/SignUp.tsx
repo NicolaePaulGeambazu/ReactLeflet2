@@ -1,3 +1,4 @@
+// SignUp.tsx
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -9,10 +10,10 @@ import {
   StepContent,
   FormGroup,
   Label,
-  Select,
   Button,
   InlineGroup,
   DateInput,
+  ButtonWrapper,
 } from './SignUp.style';
 
 interface FormData {
@@ -28,7 +29,11 @@ interface FormData {
 }
 
 const SignUp: React.FC = () => {
-  const { handleSubmit, control, formState: { errors } } = useForm<FormData>({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm<FormData>({
     defaultValues: {
       firstName: '',
       surname: '',
@@ -41,42 +46,46 @@ const SignUp: React.FC = () => {
       comments: '',
     },
   });
+
   const [activeStep, setActiveStep] = useState<number | null>(1);
 
-const onSubmit: SubmitHandler<FormData> = (data) => {
-  if (data?.comments) {
-    // Create an object with the desired structure
-    const postData = {
-      firstName: data?.firstName || '',
-      surname: data?.surname || '',
-      email: data?.email || '',
-      phoneNumber: data?.phoneNumber || '',
-      gender: data?.gender || 'Select...',
-      day: data?.day || '',
-      month: data?.month || '',
-      year: data?.year || '',
-      comments: data?.comments || '',
-    };
-
-    // Send a POST request using Axios
-    axios.post('your-api-endpoint', postData)
-      .then((response) => {
-        // Handle success
-        console.log('Post request successful', response);
-      })
-      .catch((error) => {
-        // Handle error
-        console.error('Error during post request', error);
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    console.log('Form Data:', data);
+     try {
+      const response = await axios.post('http://localhost:8000/api/user', {
+        body: {
+          firstname: data.firstName,
+          surname: data.surname,
+          emailaddress: data.email,
+          phonenumber: data.phoneNumber,
+          comments: data.comments,
+          dateofbirth: `${data.year}-${data.month}-${data.day}`,
+          gender: data?.gender,
+        },
       });
-  }
-};
+
+      alert(response.data);
+      // Handle success, show a success message, or navigate to another page
+    } catch (error) {
+      console.error('API Error:', error);
+      // Handle error, show an error message, or perform other actions
+    }
+  };
+
+  const handleStepClick = (step: number) => {
+    setActiveStep(step);
+  };
+
+  const isStepActive = (step: number) => activeStep === step;
 
   return (
     <PageContainer>
       <FormContainer>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <StepHeader onClick={() => setActiveStep(1)}>Step 1: Your Details</StepHeader>
-          {activeStep === 1 && (
+          <StepHeader onClick={() => handleStepClick(1)} isActive={isStepActive(1)}>
+            Step 1: Your Details
+          </StepHeader>
+          {isStepActive(1) && (
             <StepContent>
               <InlineGroup>
                 <FormGroup>
@@ -146,14 +155,16 @@ const onSubmit: SubmitHandler<FormData> = (data) => {
                   )}
                 />
               </FormGroup>
-              <Button type="submit">
-                Next
-              </Button>
+              <ButtonWrapper>
+              <Button type="button" onClick={() => handleStepClick(2)}>Next</Button>
+              </ButtonWrapper>
             </StepContent>
           )}
 
-          <StepHeader>Step 2: More Comments</StepHeader>
-          {activeStep === 2 && (
+          <StepHeader onClick={() => handleStepClick(2)} isActive={isStepActive(2)}>
+            Step 2: More Comments
+          </StepHeader>
+          {isStepActive(2) && (
             <StepContent>
               <InlineGroup>
                 <FormGroup>
@@ -272,14 +283,16 @@ const onSubmit: SubmitHandler<FormData> = (data) => {
                   />
                 </FormGroup>
               </DateInput>
-              <Button type="submit">
-                Next
-              </Button>
+              <ButtonWrapper>
+              <Button type="button" onClick={() => handleStepClick(3)}>Next</Button>
+              </ButtonWrapper>
             </StepContent>
           )}
 
-          <StepHeader>Step 3: Final Comments</StepHeader>
-          {activeStep === 3 && (
+          <StepHeader onClick={() => handleStepClick(3)} isActive={isStepActive(3)}>
+            Step 3: Final Comments
+          </StepHeader>
+          {isStepActive(3) && (
             <StepContent>
               <FormGroup>
                 <Label>Comments</Label>
@@ -299,7 +312,9 @@ const onSubmit: SubmitHandler<FormData> = (data) => {
                   )}
                 />
               </FormGroup>
+              <ButtonWrapper>
               <Button type="submit">Submit</Button>
+              </ButtonWrapper>
             </StepContent>
           )}
         </form>

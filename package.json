@@ -24,7 +24,7 @@
     "yup": "^1.3.2"
   },
   "scripts": {
-    "start": "concurrently \"npm run start:frontend\" \"npm run start:backend\"",
+    "start": "react-scripts start",
     "start:frontend": "react-scripts start",
     "start:backend": "ts-node server.ts",
     "build": "react-scripts build",

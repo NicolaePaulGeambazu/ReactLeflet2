@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+interface StepHeaderProps {
+  isActive: boolean;
+}
+
 export const PageContainer = styled.div`
   background-color: lightblue;
   display: flex;
@@ -16,13 +20,20 @@ export const FormContainer = styled.div`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
-export const StepHeader = styled.div`
-  background-color: #f9ca24;
-  color: white;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
+export const ButtonWrapper = styled.div`
+display: flex;
+justify-content: flex-end;
+`;
+
+export  const StepHeader = styled.div<StepHeaderProps>`
   cursor: pointer;
+  padding: 10px;
+  background: ${(props: StepHeaderProps) =>
+  props.isActive
+    ? 'linear-gradient(rgba(255, 255, 0, 0.5), rgba(235, 235, 195, 0.7))'
+    : 'linear-gradient(rgba(255, 255, 0, 0.7), rgba(233, 233, 60))'};
+
+
 `;
 
 export const StepContent = styled.div`
@@ -54,6 +65,7 @@ export const Button = styled.button`
   background-color: #4caf50;
   color: white;
   border: none;
+  width: 30%;
   border-radius: 8px;
   cursor: pointer;
 `;
