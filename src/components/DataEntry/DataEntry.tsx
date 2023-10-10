@@ -1,4 +1,3 @@
-// DataEntry.tsx
 import React from 'react';
 import { StyledInput, StyledTextArea, StyledSelect, ErrorText } from './DataEntry.style';
 

@@ -1,4 +1,4 @@
-// SignUp.tsx
+
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -65,10 +65,8 @@ const SignUp: React.FC = () => {
       });
 
       alert(response.data);
-      // Handle success, show a success message, or navigate to another page
     } catch (error) {
       console.error('API Error:', error);
-      // Handle error, show an error message, or perform other actions
     }
   };
 
