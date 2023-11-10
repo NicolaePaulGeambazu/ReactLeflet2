@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Page from './components/Page';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
+import MapComponent from './MapComponent';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Page />
+    <MapComponent />
   </React.StrictMode>,
   document.getElementById('root')
 );
