@@ -39,23 +39,6 @@ const MapComponent: React.FC = () => {
 
   const center: LatLngTuple = [51.505, -0.09];
 
-  const calculateShapeColor = (size: number): string => {
-    if (!coordinates) return 'gray';
-
-    const maxSize = Math.max(
-      ...Object.values(coordinates).flatMap((region) => region.map((coord) => coord.size))
-    );
-    const minSize = Math.min(
-      ...Object.values(coordinates).flatMap((region) => region.map((coord) => coord.size))
-    );
-
-    const value = (size - minSize) / (maxSize - minSize);
-    const red = Math.round(255 * (1 - value));
-    const green = Math.round(255 * value);
-
-    return `rgb(${red}, ${green}, 0)`;
-  };
-
   return (
     <MapContainer center={center} zoom={2} style={{ height: '500px', width: '100%' }}>
       <TileLayer
@@ -67,14 +50,10 @@ const MapComponent: React.FC = () => {
         Object.keys(coordinates).map((region, index) => (
           <React.Fragment key={index}>
             {coordinates[region].map((coord: Coordinate, coordIndex: number) => {
-              const shapeColor = calculateShapeColor(coord.size);
-
               return (
                 <Circle
                   key={coordIndex}
                   center={[coord.latitude, coord.longitude]}
-                  pathOptions={{ fillColor: shapeColor }}
-                  radius={200}
                 />
               );
             })}
